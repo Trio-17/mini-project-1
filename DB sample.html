@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #formContainer {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .delete-btn {
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="formContainer">
+        <h2>User Information Form</h2>
+        <form id="userInfoForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required><br>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select><br>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required><br>
+
+            <label for="securityQuestion">Security Question:</label>
+            <input type="text" id="securityQuestion" required><br>
+
+            <button type="button" onclick="addRow()">Add User</button>
+        </form>
+
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Serial Number</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Gender</th>
+                    <th>Date of Birth</th>
+                    <th>Security Question</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function addRow() {
+            var table = document.getElementById("userTable");
+            var formData = getFormData();
+
+            var row = table.insertRow(table.rows.length);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+
+            cell1.innerHTML = table.rows.length - 1; // Serial number
+            cell2.innerHTML = formData.username;
+            cell3.innerHTML = '*'.repeat(formData.password.length); // Display asterisks for password
+            cell4.innerHTML = formData.gender;
+            cell5.innerHTML = formData.dob;
+            cell6.innerHTML = formData.securityQuestion;
+            cell7.innerHTML = '<span class="delete-btn" onclick="deleteRow(this)">Delete</span>';
+
+            saveDataToLocalStorage();
+            clearForm();
+        }
+
+        function deleteRow(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            updateSerialNumbers();
+            saveDataToLocalStorage();
+        }
+
+        function updateSerialNumbers() {
+            var table = document.getElementById("userTable");
+            for (var i = 1; i < table.rows.length; i++) {
+                table.rows[i].cells[0].innerHTML = i; // Update serial numbers
+            }
+        }
+
+        function getFormData() {
+            return {
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+                gender: document.getElementById("gender").value,
+                dob: document.getElementById("dob").value,
+                securityQuestion: document.getElementById("securityQuestion").value,
+            };
+        }
+
+        function clearForm() {
+            document.getElementById("userInfoForm").reset();
+        }
+
+        function saveDataToLocalStorage() {
+            var userData = [];
+            var table = document.getElementById("userTable");
+
+            for (var i = 1; i < table.rows.length; i++) {
+                var rowData = {
+                    serialNumber: table.rows[i].cells[0],
+                    username: table.rows[i].cells[1],
+                    password: table.rows[i].cells[2],
+                    gender: table.rows[i].cells[3] ,
+                    dob: table.rows[i].cells[4] ,
+                    securityQuestion: table.rows[i].cells[5].innerHTML,
+                };
+                userData.push(rowData);
+            }
+
+            localStorage.setItem("userData", JSON.stringify(userData));
+        }
+
+        function loadUserDataFromLocalStorage() {
+            var storedData = localStorage.getItem("userData");
+            if (storedData) {
+                var userData = JSON.parse(storedData);
+
+                for (var i = 0; i < userData.length; i++) {
+                    var row = document.getElementById("userTable").insertRow(i + 1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    var cell7 = row.insertCell(6);
+
+                    cell1.innerHTML = userData[i].serialNumber;
+                    cell2.innerHTML = userData[i].username;
+                    cell3.innerHTML = userData[i].password;
+                    cell4.innerHTML = userData[i].gender;
+                    cell5.innerHTML = userData[i].dob;
+                    cell6.innerHTML = userData[i].securityQuestion;
+                    cell7.innerHTML = '<span class="delete-btn" onclick="deleteRow(this)">Delete</span>';
+                }
+            }
+        }
+
+        loadUserDataFromLocalStorage();
+    </script>
+
+</body>
+</html>
