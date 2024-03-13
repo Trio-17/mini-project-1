@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Mini Project</title> 
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <script type="text/javascript">
+        function signlog(){
+          window.location="file:///C:/Users/HP/index2.html";
+        }
+      </script>
+   </head>
+<body> 
+  <nav>
+
+    
+    <div class="menu">
+      <div class="logo">
+        <a href="#">#Project</a>
+      </div>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="useraccount.html">Account</a></li>
+        <li><a href="index2.html"> Login</a></li>
+     <li><a href="index2.html">Signin</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="img"></div>
+  <div class="center">
+    <div class="title">THE PASSWORD PARADOX</div>
+    <div class="sub_title"> < Hands on Experience ></div>
+    <div class="btns">
+      
+     
+      </div>
+  </div>
+  <script src="script.js"></script>
+  
+   
+</body>
+</html>
